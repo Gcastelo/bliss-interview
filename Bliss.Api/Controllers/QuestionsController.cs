@@ -4,18 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Bliss.Data;
 
-namespace BlissApi.Controllers
+namespace Bliss.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     public class QuestionsController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
         private readonly ILogger<QuestionsController> _logger;
 
         public QuestionsController(ILogger<QuestionsController> logger)
@@ -24,16 +20,32 @@ namespace BlissApi.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Question> Get()
+        public async Task<ActionResult<IEnumerable<Question>>> Get([FromQuery]int limit, [FromQuery]int offset = 0, [FromQuery]String filter = null)
         {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            })
-            .ToArray();
+          return await Task.Run( () => new List<Question>());
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<Question>> GetById(int id)
+        {
+          return  await Task.Run( () => new Question{});
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Post([FromBody]Question question)
+        {
+          await Task.Run( () =>  null );
+
+          return CreatedAtAction(nameof(GetById), 0, new Question());
+        }
+
+        
+        [HttpPut]
+        public async Task<ActionResult> Put(int id, [FromBody]Question question)
+        {
+          await Task.Run( () =>  null );
+
+          return NoContent();
         }
     }
 }
