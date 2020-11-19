@@ -29,11 +29,13 @@ namespace Bliss.Api
             services.AddSingleton<IDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
 
-            services.AddSingleton<IDataProvider>(sp =>
-                sp.GetRequiredService<IOptions<MongoDataProvider>>().Value);
+            services.AddSingleton<MongoDataProvider>(sp => new MongoDataProvider(sp.GetRequiredService<IDatabaseSettings>()));
 
-            services.AddControllers().ConfigureApiBehaviorOptions( options => options.SuppressModelStateInvalidFilter = true );
-            
+            services.AddSingleton<IDataProvider>(sp =>
+                sp.GetService<MongoDataProvider>());
+
+            services.AddControllers().ConfigureApiBehaviorOptions(options => options.SuppressModelStateInvalidFilter = true);
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BlissApi", Version = "v1" });
@@ -50,7 +52,7 @@ namespace Bliss.Api
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BlissApi v1"));
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 
