@@ -10,18 +10,18 @@ namespace Bliss.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class HealthController : ControllerBase
+    public class ShareController : ControllerBase
     {
 
-        private readonly ILogger<HealthController> _logger;
+        private readonly ILogger<ShareController> _logger;
 
-        public HealthController(ILogger<HealthController> logger)
+        public ShareController(ILogger<ShareController> logger)
         {
             _logger = logger;
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Share([FromQuery] string email, [FromQuery] string content_url)
         {
           return Ok(new ResponseStatus{ Status = "OK"});
         }
