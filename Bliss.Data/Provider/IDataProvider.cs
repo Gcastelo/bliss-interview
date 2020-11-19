@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
@@ -7,10 +6,10 @@ namespace Bliss.Data.Provider
 {
     public interface IDataProvider
     {
-        Task<IEnumerable<Question>> Get(int limit, int offset, String filter);
+        Task<IList<SavedQuestion>> Get(int limit, int offset, String filter);
+        Task<SavedQuestion> GetById(string id);
+        Task<string> Save(SavedQuestion question);
 
-        Task<Question> GetById(int id);
-
-        Task Save(Question id);
+        Task DropCollection();
     }
 }
