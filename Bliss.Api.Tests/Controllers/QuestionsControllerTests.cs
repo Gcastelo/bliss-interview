@@ -94,7 +94,7 @@ namespace Bliss.Api.Tests.Controllers
             _mockProvider.Setup(x => x.Save(question)).ReturnsAsync(() => "");
             controller = new QuestionsController(null, _mockProvider.Object);
 
-            var result = await controller.Put(1, question);
+            var result = await controller.Put("", question);
 
             Assert.IsInstanceOf<CreatedAtActionResult>(result);
         }
@@ -108,7 +108,7 @@ namespace Bliss.Api.Tests.Controllers
             controller = new QuestionsController(null, _mockProvider.Object);
             controller.ModelState.AddModelError("InvalidFields", "All fields are mandatory");
 
-            var result = await controller.Put(1, question);
+            var result = await controller.Put("", question);
 
             Assert.IsInstanceOf<BadRequestObjectResult>(result);
             Assert.AreEqual("All fields are mandatory", ((ResponseStatus)(result as BadRequestObjectResult).Value).Status);
